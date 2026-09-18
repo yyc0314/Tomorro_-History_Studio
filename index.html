@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.gstatic.com" fetchpriority="high" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Huninn&amp;family=Noto+Sans+TC:wght@700;900&amp;display=swap" rel="stylesheet">
+<style>
+  body { margin: 0; background: #FFF7E3; }
+  a { color: #9E2B25; text-decoration: none; }
+  a:hover { color: #241E1B; }
+  @keyframes bob { 0%,100% { transform: translateY(0) rotate(0deg); } 50% { transform: translateY(-8px) rotate(7deg); } }
+  @keyframes starFloat { 0%,100% { transform: translate(0,0) rotate(-6deg); } 50% { transform: translate(5px,-12px) rotate(10deg); } }
+  @keyframes starTwinkle { 0%,100% { opacity: 1; } 45% { opacity: 0.55; } }
+  @keyframes runFloat { 0%,100% { transform: translate(0,0) rotate(4deg); } 50% { transform: translate(-5px,-12px) rotate(-8deg); } }
+  @keyframes hintLine { 0% { transform: scaleY(0.15); transform-origin: top; opacity: 0.25; } 45% { transform: scaleY(1); transform-origin: top; opacity: 1; } 55% { transform: scaleY(1); transform-origin: bottom; opacity: 1; } 100% { transform: scaleY(0.15); transform-origin: bottom; opacity: 0.25; } }
+  @media (prefers-reduced-motion: reduce) { #heroRow img, #heropanel img, #hintline { animation: none !important; } }
+  @media (max-width: 700px) { #railtext { display: none !important; } }
+  #rail { scrollbar-width: none; }
+  #rail::-webkit-scrollbar { height: 0; }
+  @media (max-width: 1100px) {
+    #navlinks { display: none !important; }
+    #navToggle { display: flex !important; }
+    #navlinks[data-open="true"] { box-shadow: 0 14px 30px rgba(60,44,20,0.14); }
+    #navlinks[data-open="true"] { display: flex !important; position: absolute; top: 100%; left: 0; right: 0; z-index: 40; flex-direction: column; align-items: flex-start; background: #FFF7E3; border-bottom: 1px solid #E0CDA6; padding: 8px clamp(24px,7vw,132px) 22px; row-gap: 2px; }
+    #navlinks[data-open="true"] a { padding: 12px 0; }
+    .split { grid-template-columns: minmax(0,1fr) !important; row-gap: 14px !important; }
+  }
+  @media (max-width: 900px) {
+    .teamopen { grid-template-columns: minmax(0,1fr) !important; }
+    .pairs { grid-template-columns: minmax(0,1fr) !important; }
+    .workcard { flex: 0 0 78vw !important; }
+    #herotitle { font-size: clamp(28px,7.4vw,50px) !important; }
+    #heroRow { gap: 8px !important; min-height: 0 !important; }
+    #heroRow img { position: absolute !important; z-index: 0 !important; }
+    #heroRow img:first-of-type { left: 0 !important; top: -34px !important; }
+    #heroRow img:last-of-type { right: 0 !important; top: -52px !important; bottom: auto !important; height: clamp(44px,11vw,62px) !important; }
+    #herotitle { position: relative !important; z-index: 1 !important; width: 100% !important; padding: 0 clamp(34px,10vw,56px) !important; box-sizing: border-box !important; text-align: center !important; }
+  }
+  @media (max-width: 700px) {
+    #heropanel { min-height: calc(100svh - 64px) !important; gap: 10px !important; padding: 18px 20px 46px !important; }
+    #herotitle { font-size: clamp(25px,6.8vw,50px) !important; }
+    .heromark { padding-top: 6px !important; }
+    .heromark [data-div] { display: none !important; }
+    .heromark [data-en] { flex: 0 0 100% !important; text-align: center !important; }
+  }
+  @media (max-width: 700px) {
+    #about, #teams, #works, #news, #studio, #join, #contact { padding-top: 58px !important; padding-bottom: 58px !important; }
+    #news [data-newstitle] { font-size: 17px !important; line-height: 1.6 !important; }
+    #news button { padding-top: 18px !important; padding-bottom: 18px !important; }
+    .footmark { flex-wrap: wrap !important; row-gap: 5px !important; }
+    .footmark [data-div] { display: none !important; }
+    .footmark [data-en] { flex: 0 0 100% !important; }
+    footer { padding-top: 26px !important; padding-bottom: 26px !important; }
+  }
+</style>
+</helmet>
+<div style="position:relative;background-color:#FFF7E3;color:#241E1B;font-family:'Huninn','Noto Sans TC',sans-serif;overflow:hidden">
+  <div id="marginrule" style="position:absolute;top:calc(clamp(18px,2.4vh,26px) * 2 + 40px);left:max(12px,calc(clamp(24px,7vw,132px) - 26px));width:0;height:0;pointer-events:none;">
+    
+    
+    <span id="railtext" style="position:absolute;top:clamp(140px,24vh,280px);left:7px;writing-mode:vertical-rl;text-orientation:mixed;font-size:10px;font-weight:700;letter-spacing:0.26em;color:rgba(158,43,37,0.62);white-space:nowrap;">TOMORROW HISTORY STUDIO</span>
+  </div>
+
+  <header style="position: fixed; top: 0; left: 0; right: 0; z-index: 30; display: flex; align-items: center; justify-content: space-between; gap: 32px; padding: clamp(18px,2.4vh,26px) clamp(24px,7vw,132px); border-bottom: 1px solid #E0CDA6; background-color: #EEE5D4; border-style: none">
+    <a href="#heropanel" style="display:flex;align-items:center;gap:12px;color:#241E1B;">
+      <img src="assets/star-160.png" alt="" style="width:24px;height:auto;">
+      <span style="font-family:'Noto Sans TC',sans-serif;font-weight:900;font-size:22px;letter-spacing:0.01em;white-space:nowrap;">明日歷史工作室</span>
+    </a>
+    <button type="button" id="navToggle" onClick="{{ toggleMenu }}" style="display:none;align-items:center;justify-content:flex-end;gap:8px;min-height:44px;background:none;border:0;padding:6px 2px 6px 14px;cursor:pointer;color:#9E2B25;font-family:'Huninn',sans-serif;font-size:15px;font-weight:700;">
+      <span style="display:flex;flex-direction:column;gap:4px;"><span style="display:block;width:22px;height:2px;background:#9E2B25;"></span><span style="display:block;width:22px;height:2px;background:#9E2B25;"></span><span style="display:block;width:22px;height:2px;background:#9E2B25;"></span></span>
+      {{ menuLabel }}
+    </button>
+    <nav id="navlinks" data-open="{{ menuOpenAttr }}" onClick="{{ closeMenu }}" style="display:flex;column-gap:26px;font-size:16px;font-weight:700;white-space:nowrap;">
+      <a href="#about" style="color:#241E1B;" style-hover="color:#9E2B25;">關於我們</a><a href="#teams" style="color:#241E1B;" style-hover="color:#9E2B25;">組別介紹</a><a href="#works" style="color:#241E1B;" style-hover="color:#9E2B25;">成果展示</a><a href="#news" style="color:#241E1B;" style-hover="color:#9E2B25;">最新消息</a><a href="#studio" style="color:#241E1B;" style-hover="color:#9E2B25;">工作室借用</a><a href="#join" style="color:#241E1B;" style-hover="color:#9E2B25;">招募資訊</a><a href="#contact" style="color:#241E1B;" style-hover="color:#9E2B25;">聯絡我們</a>
+    </nav>
+  </header>
+
+  <div id="heropanel" style="position: relative; min-height: calc(100svh - clamp(18px,2.4vh,26px) * 2 - 40px); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: clamp(22px,3.4vh,40px); padding: clamp(36px,6vh,72px) clamp(20px,5vw,96px); text-align: center; overflow: hidden; background-color: #FFF7E3">
+      <div style="position:absolute;inset:0;pointer-events:none;background-image:url(&quot;assets/hero-noise.svg&quot;);background-size:300px 300px;mix-blend-mode:multiply;opacity:0.15;"></div>
+      <div style="position: absolute; inset: 0; pointer-events: none; background-image: radial-gradient(rgba(160,128,74,0.36) 1px, rgba(160,128,74,0) 1.2px); background-size: 26px 26px; background-color: #FFF7E3"></div>
+      
+      <img src="assets/star-160.png" alt="" data-par="24" style="position:absolute;right:clamp(7%,10vw,15%);bottom:clamp(20%,24vh,30%);width:clamp(12px,1.6vw,22px);height:auto;opacity:0.5;pointer-events:none;animation:starFloat 11s ease-in-out infinite reverse;">
+      <div style="position:absolute;left:50%;bottom:clamp(10px,2vh,20px);transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:8px;pointer-events:none;">
+        <span style="font-size:11px;font-weight:700;letter-spacing:0.22em;color:rgba(158,43,37,0.7);">往下捲動</span>
+        <span id="hintline" style="display:block;width:1px;height:26px;background:#9E2B25;animation:hintLine 2.6s ease-in-out infinite;"></span>
+      </div>
+    <div id="heroRow" style="position:relative;display:flex;align-items:center;justify-content:center;gap:clamp(10px,2.4vw,40px);width:100%;">
+      <img src="assets/star-160.png" alt="" style="flex:0 0 auto;align-self:flex-start;width:clamp(28px,4vw,72px);height:auto;animation:starFloat 6s ease-in-out infinite, starTwinkle 3.2s ease-in-out infinite;">
+      <h1 id="herotitle" style="margin:0;min-width:0;font-family:'Noto Sans TC',sans-serif;font-weight:900;font-size:clamp(32px,5.4vw,92px);line-height:1.16;letter-spacing:-0.01em;color:#9E2B25;text-wrap:balance;">讓歷史成為未來的養分！</h1>
+      <img src="assets/runner-480.png" alt="" style="flex:0 0 auto;align-self:flex-end;height:clamp(58px,8.4vw,128px);width:auto;transform-origin:50% 100%;animation:runFloat 6s ease-in-out infinite;">
+    </div>
+    <div style="position:relative;display:flex;align-items:center;gap:clamp(12px,1.6vw,22px);font-family:'Noto Sans TC',sans-serif;font-weight:900;font-size:clamp(17px,1.9vw,27px);color:#9E2B25;">
+      <span>美術</span><span style="width:1px;height:1em;background:#C9A46A;"></span><span>影音</span><span style="width:1px;height:1em;background:#C9A46A;"></span><span>田調</span><span style="width:1px;height:1em;background:#C9A46A;"></span><span>資料</span><span style="width:1px;height:1em;background:#C9A46A;"></span><span>AI</span>
+    </div>
+    <a href="#teams" style="position:relative;margin-top:clamp(4px,1vh,10px);padding:14px 30px;background:#9E2B25;color:#FFF7E3;font-size:15px;font-weight:700;letter-spacing:0.04em;transition:background .2s;" style-hover="background:#7E211C;">認識五個組別</a>
+    <div class="heromark" style="position:relative;display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:6px 14px;padding-top:clamp(10px,2.2vh,28px);font-size:12px;font-weight:700;letter-spacing:0.16em;color:#9E2B25;">
+      <span style="white-space:nowrap;">明日歷史工作室</span><span data-div="" style="width:1px;height:12px;background:#C9A46A;"></span><span data-en="" style="white-space:nowrap;">TOMORROW HISTORY STUDIO</span>
+    </div>
+    </div>
+
+  
+
+  
+
+  <section id="about" style="display: grid; padding: clamp(92px,16vh,210px) clamp(24px,7vw,132px); border-top: 1px solid #E0CDA6; border-style: none; gap: clamp(22px,4vw,64px); align-items: start; grid-template-columns: minmax(0,1fr) minmax(0,34em); " class="split">
+    <h2 style="margin:0;font-family:'Noto Sans TC',sans-serif;font-weight:900;font-size:clamp(27px,5.2vw,40px);line-height:1.3;letter-spacing:-0.02em;">關於我們</h2>
+    <div style="display:flex;flex-direction:column;gap:clamp(18px,2.4vh,26px);min-width:0;">
+    
+    <p style="margin: 0; font-size: 17px; line-height: 1.95; color: #4A3D33; text-wrap: pretty; align-self: stretch; position: static">明日歷史工作室隸屬於國立成功大學歷史學系，為本系張哲維助理教授創立之工作團隊。成立旨在整合歷史學系相關資源，建立專案執行、空間管理及設備運用機制，提供穩定且制度化的工作環境，促進歷史專業與數位技術之整合應用。</p><p style="margin: 0; max-width: 34em; font-size: 17px; line-height: 1.95; color: #4A3D33; text-wrap: pretty">依業務內容，工作室設有田野調查、影音製作、美術行銷、資料建置及 AI 實驗五個組別，由各組依專業分工負責不同領域之工作，並依專案需求進行跨組合作。工作內容涵蓋田野調查、資料建置、視覺設計、影音製作、網站維護、數位典藏及人工智慧應用等面向，透過整合各組專業與資源，持續推動歷史學與數位科技的結合。</p>
+    </div>
+  </section><section id="teams" style="display: flex; flex-direction: column; gap: clamp(22px,3vh,34px); padding: clamp(92px,16vh,210px) clamp(24px,7vw,132px); border-top: 1px solid #E0CDA6; border-style: none; border-color: #0F0C08">
+    <h2 style="margin: 0; font-family: 'Noto Sans TC',sans-serif; font-weight: 900; font-size:clamp(27px,5.2vw,40px); line-height: 1.3; letter-spacing: -0.02em">組別介紹</h2>
+    <div style="display: flex; flex-direction: column">
+
+      <div style="border-top:1px solid #E0CDA6;">
+        <button type="button" onClick="{{ t1 }}" style="width:100%;background:none;border:0;padding:26px 0;display:flex;align-items:center;gap:20px;text-align:left;cursor:pointer;color:{{ c1 }};font-family:'Noto Sans TC',sans-serif;transition:color .2s,padding-left .2s;" style-hover="color:#9E2B25;padding-left:12px;">
+          <span style="font-family:'Huninn',sans-serif;font-size:14px;font-weight:700;letter-spacing:0.14em;color:#9E2B25;">01</span>
+          <span style="flex:1;font-weight:900;font-size:clamp(22px,2.2vw,30px);line-height:1.35;letter-spacing:-0.02em;">田野調查</span>
+          <span style="font-weight:900;font-size:24px;color:#9E2B25;">{{ s1 }}</span>
+        </button>
+        <sc-if value="{{ o1 }}" hint-placeholder-val="{{ true }}">
+          <div class="teamopen" style="display:grid;grid-template-columns:minmax(0,0.78fr) minmax(0,1.22fr);gap:clamp(20px,3.4vw,56px);padding:0 0 40px;align-items:start;">
+            <div style="min-width:0;">
+              <div style="position:relative;aspect-ratio:4/3;overflow:hidden;">
+                <div data-par="22" style="position:absolute;left:0;right:0;top:-8%;height:116%;background:#F0E2C2;display:flex;align-items:center;justify-content:center;font-size:13px;color:#6B5C46;">田野現場照</div>
+              </div>
+            </div>
+            <p style="margin:0;max-width:34em;font-size:17px;line-height:1.95;color:#4A3D33;text-wrap:pretty;">田野調查組透過口述歷史訪談、實地踏查與資料蒐集，從地方居民的生命經驗、空間變遷與歷史記憶出發，探索校園及周邊社區的歷史脈絡與地方故事。除了蒐集與整理地方史料，我們也希望將田野調查的成果轉化為更貼近生活的歷史科普內容，透過文字、影像等不同形式進行記錄與呈現。從一條街道、一棟建築到一段個人記憶，重新發掘日常生活中的歷史痕跡，讓地方的故事被看見、記錄與延續。</p>
+          </div>
+        </sc-if>
+      </div>
+
+      <div style="border-top:1px solid #E0CDA6;">
+        <button type="button" onClick="{{ t2 }}" style="width:100%;background:none;border:0;padding:26px 0;display:flex;align-items:center;gap:20px;text-align:left;cursor:pointer;color:{{ c2 }};font-family:'Noto Sans TC',sans-serif;transition:color .2s,padding-left .2s;" style-hover="color:#9E2B25;padding-left:12px;">
+          <span style="font-family:'Huninn',sans-serif;font-size:14px;font-weight:700;letter-spacing:0.14em;color:#9E2B25;">02</span>
+          <span style="flex:1;font-weight:900;font-size:clamp(22px,2.2vw,30px);line-height:1.35;letter-spacing:-0.02em;">影音製作</span>
+          <span style="font-weight:900;font-size:24px;color:#9E2B25;">{{ s2 }}</span>
+        </button>
+        <sc-if value="{{ o2 }}" hint-placeholder-val="{{ false }}">
+          <div class="teamopen" style="display:grid;grid-template-columns:minmax(0,0.78fr) minmax(0,1.22fr);gap:clamp(20px,3.4vw,56px);padding:0 0 40px;align-items:start;">
+            <div style="min-width:0;">
+              <div style="position:relative;aspect-ratio:4/3;overflow:hidden;">
+                <div data-par="22" style="position:absolute;left:0;right:0;top:-8%;height:116%;background:#F0E2C2;display:flex;align-items:center;justify-content:center;font-size:13px;color:#6B5C46;">拍攝或剪輯工作照</div>
+              </div>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:18px;">
+              <p style="margin:0;max-width:34em;font-size:17px;line-height:1.95;color:#4A3D33;text-wrap:pretty;">影音製作將人文社會議題轉化為更具親近感的影音內容。我們從企劃發想、資料整理與腳本撰寫開始，透過訪談、影像拍攝、聲音紀錄及剪輯後製等方式，嘗試以不同媒介傳達內容。</p>
+              <p style="margin:0;max-width:34em;font-size:17px;line-height:1.95;color:#4A3D33;text-wrap:pretty;">組內製作形式包含專題影片、Podcast、短影音、活動紀錄等，也會與美術行銷、田野調查等組別合作，將成果進一步轉化為適合大眾觀看與理解的內容。我們希望影音不只是成果的紀錄工具，更能成為傳遞觀點的方法，透過鏡頭與聲音重新整理散落在地方、人物與日常生活中的事物與議題，讓那些脈絡以更多元的形式被看見、聽見與理解。</p>
+            </div>
+          </div>
+        </sc-if>
+      </div>
+
+      <div style="border-top:1px solid #E0CDA6;">
+        <button type="button" onClick="{{ t3 }}" style="width:100%;background:none;border:0;padding:26px 0;display:flex;align-items:center;gap:20px;text-align:left;cursor:pointer;color:{{ c3 }};font-family:'Noto Sans TC',sans-serif;transition:color .2s,padding-left .2s;" style-hover="color:#9E2B25;padding-left:12px;">
+          <span style="font-family:'Huninn',sans-serif;font-size:14px;font-weight:700;letter-spacing:0.14em;color:#9E2B25;">03</span>
+          <span style="flex:1;font-weight:900;font-size:clamp(22px,2.2vw,30px);line-height:1.35;letter-spacing:-0.02em;">美術行銷</span>
+          <span style="font-weight:900;font-size:24px;color:#9E2B25;">{{ s3 }}</span>
+        </button>
+        <sc-if value="{{ o3 }}" hint-placeholder-val="{{ false }}">
+          <div class="teamopen" style="display:grid;grid-template-columns:minmax(0,0.78fr) minmax(0,1.22fr);gap:clamp(20px,3.4vw,56px);padding:0 0 40px;align-items:start;">
+            <div style="min-width:0;">
+              <div style="position:relative;aspect-ratio:4/3;overflow:hidden;">
+                <div data-par="22" style="position:absolute;left:0;right:0;top:-8%;height:116%;background:#F0E2C2;display:flex;align-items:center;justify-content:center;font-size:13px;color:#6B5C46;">主視覺與海報作品</div>
+              </div>
+            </div>
+            <p style="margin:0;max-width:34em;font-size:17px;line-height:1.95;color:#4A3D33;text-wrap:pretty;">美術行銷組主要負責工作室的品牌形象經營與對外宣傳，透過視覺設計、社群媒體經營及影像製作，將歷史研究成果以更容易理解且富有吸引力的方式傳遞給大眾。組內工作涵蓋海報、主視覺、社群貼文、短影音、活動紀錄與宣傳素材設計等，並與各組密切合作，協助田野成果、研究內容及活動資訊的推廣。我們期望運用設計思維與數位媒體，建立工作室對外一致且具辨識度的品牌形象，讓更多人看見地方文化、歷史故事的價值，成為連結學術與社會的重要橋梁！</p>
+          </div>
+        </sc-if>
+      </div>
+
+      <div style="border-top:1px solid #E0CDA6;">
+        <button type="button" onClick="{{ t4 }}" style="width:100%;background:none;border:0;padding:26px 0;display:flex;align-items:center;gap:20px;text-align:left;cursor:pointer;color:{{ c4 }};font-family:'Noto Sans TC',sans-serif;transition:color .2s,padding-left .2s;" style-hover="color:#9E2B25;padding-left:12px;">
+          <span style="font-family:'Huninn',sans-serif;font-size:14px;font-weight:700;letter-spacing:0.14em;color:#9E2B25;">04</span>
+          <span style="flex:1;font-weight:900;font-size:clamp(22px,2.2vw,30px);line-height:1.35;letter-spacing:-0.02em;">資料建置</span>
+          <span style="font-weight:900;font-size:24px;color:#9E2B25;">{{ s4 }}</span>
+        </button>
+        <sc-if value="{{ o4 }}" hint-placeholder-val="{{ false }}">
+          <div class="teamopen" style="display:grid;grid-template-columns:minmax(0,0.78fr) minmax(0,1.22fr);gap:clamp(20px,3.4vw,56px);padding:0 0 40px;align-items:start;">
+            <div style="min-width:0;">
+              <div style="position:relative;aspect-ratio:4/3;overflow:hidden;">
+                <div data-par="22" style="position:absolute;left:0;right:0;top:-8%;height:116%;background:#F0E2C2;display:flex;align-items:center;justify-content:center;font-size:13px;color:#6B5C46;">掃描設備與檔案</div>
+              </div>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:18px;">
+              <p style="margin:0;max-width:34em;font-size:17px;line-height:1.95;color:#4A3D33;text-wrap:pretty;">資料建置組是工作室營運與數位轉型的重要基石。我們致力於將各式紙本文件、歷史檔案與珍貴資料，透過高品質的掃描設備與嚴謹的人工操作，精密轉化為標準化的數位檔案。</p>
+              <p style="margin:0;max-width:34em;font-size:17px;line-height:1.95;color:#4A3D33;text-wrap:pretty;">從前置的文檔整理、高解析度影像掃描，到後續的檔案校對與目錄建檔，團隊始終以細致與專業的態度對待每一張紙張。我們不僅是資料數位化的推手，更為工作室搭建起高效、安全的數位知識庫，讓寶貴的資訊能夠永續保存、靈活運用。</p>
+            </div>
+          </div>
+        </sc-if>
+      </div>
+
+      <div style="border-top:1px solid #E0CDA6;border-bottom:1px solid #E0CDA6;">
+        <button type="button" onClick="{{ t5 }}" style="width:100%;background:none;border:0;padding:26px 0;display:flex;align-items:center;gap:20px;text-align:left;cursor:pointer;color:{{ c5 }};font-family:'Noto Sans TC',sans-serif;transition:color .2s,padding-left .2s;" style-hover="color:#9E2B25;padding-left:12px;">
+          <span style="font-family:'Huninn',sans-serif;font-size:14px;font-weight:700;letter-spacing:0.14em;color:#9E2B25;">05</span>
+          <span style="flex:1;font-weight:900;font-size:clamp(22px,2.2vw,30px);line-height:1.35;letter-spacing:-0.02em;">AI 實驗</span>
+          <span style="font-weight:900;font-size:24px;color:#9E2B25;">{{ s5 }}</span>
+        </button>
+        <sc-if value="{{ o5 }}" hint-placeholder-val="{{ false }}">
+          <div class="teamopen" style="display:grid;grid-template-columns:minmax(0,0.78fr) minmax(0,1.22fr);gap:clamp(20px,3.4vw,56px);padding:0 0 40px;align-items:start;">
+            <div style="min-width:0;">
+              <div style="position:relative;aspect-ratio:4/3;overflow:hidden;">
+                <div data-par="22" style="position:absolute;left:0;right:0;top:-8%;height:116%;background:#F0E2C2;display:flex;align-items:center;justify-content:center;font-size:13px;color:#6B5C46;">專題實作畫面</div>
+              </div>
+            </div>
+            <p style="margin:0;max-width:34em;font-size:17px;line-height:1.95;color:#4A3D33;text-wrap:pretty;">AI 實驗組聚焦於人工智慧技術的實作與探索，從生成式 AI、大型語言模型、RAG，到資料分析、自動化工具與創新應用，透過專題實作把想法真正做出來。我們不只學習模型怎麼用，更重視問題定義、資料處理、實驗設計與成果驗證。無論你已有程式基礎，或只是對 AI 充滿好奇，都能在團隊合作中累積實戰經驗，挑戰真實問題，培養從會使用 AI 到能用 AI 解決問題的能力。</p>
+          </div>
+        </sc-if>
+      </div>
+
+    </div>
+  </section><section id="works" style="display: flex; flex-direction: column; gap: clamp(24px,3.4vh,38px); padding: clamp(92px,16vh,210px) 0; border-top: 1px solid #E0CDA6; border-style: none">
+    <div style="padding:0 clamp(24px,7vw,132px);display:flex;align-items:flex-end;justify-content:space-between;gap:26px;flex-wrap:wrap;">
+      <h2 style="margin:0;font-family:'Noto Sans TC',sans-serif;font-weight:900;font-size:clamp(27px,5.2vw,40px);line-height:1.3;letter-spacing:-0.02em;">成果展示</h2>
+      <div style="display:flex;align-items:flex-end;gap:20px;">
+        <a href="works.html" style="font-size:15px;font-weight:700;letter-spacing:0.04em;border-bottom:2px solid #9E2B25;padding-bottom:3px;">查看全部成果</a>
+        <div style="display:flex;gap:10px;">
+          <button type="button" onClick="{{ prevWork }}" disabled="{{ atStart }}" style="width:48px;height:48px;border:1px solid #9E2B25;background:none;color:#9E2B25;font-size:18px;cursor:pointer;opacity:{{ opPrev }};transition:background .2s,color .2s;" style-hover="background:#9E2B25;color:#FFF7E3;">←</button>
+          <button type="button" onClick="{{ nextWork }}" disabled="{{ atEnd }}" style="width:48px;height:48px;border:1px solid #9E2B25;background:none;color:#9E2B25;font-size:18px;cursor:pointer;opacity:{{ opNext }};transition:background .2s,color .2s;" style-hover="background:#9E2B25;color:#FFF7E3;">→</button>
+        </div>
+      </div>
+    </div>
+    <div id="rail" ref="{{ rail }}" onScroll="{{ onRailScroll }}" style="display:flex;gap:clamp(16px,2vw,26px);overflow-x:auto;padding:0 clamp(24px,7vw,132px) 6px;">
+      <a href="work.html" class="workcard" style="flex:0 0 300px;display:flex;flex-direction:column;gap:14px;color:#241E1B;">
+        <div style="aspect-ratio: 4/5; background: #F0E2C2; display: flex; align-items: center; justify-content: center; font-size: 13px; color: #6B5C46; transition: opacity .2s; height: 300px" style-hover="opacity:0.78;">照片待補</div>
+        <div style="display:flex;flex-direction:column;gap:5px;">
+          <span style="font-size:13px;font-weight:700;letter-spacing:0.14em;color:#9E2B25;">01　田野調查</span>
+          <span style="font-family:'Noto Sans TC',sans-serif;font-weight:900;font-size:21px;line-height:1.45;">成果名稱</span>
+        </div>
+      </a>
+      <a href="work.html" class="workcard" style="flex:0 0 300px;display:flex;flex-direction:column;gap:14px;color:#241E1B;">
+        <div style="aspect-ratio: 4/5; background: #F0E2C2; display: flex; align-items: center; justify-content: center; font-size: 13px; color: #6B5C46; transition: opacity .2s; height: 300px" style-hover="opacity:0.78;">照片待補</div>
+        <div style="display:flex;flex-direction:column;gap:5px;">
+          <span style="font-size:13px;font-weight:700;letter-spacing:0.14em;color:#9E2B25;">02　影音製作</span>
+          <span style="font-family:'Noto Sans TC',sans-serif;font-weight:900;font-size:21px;line-height:1.45;">成果名稱</span>
+        </div>
+      </a>
+      <a href="work.html" class="workcard" style="flex:0 0 300px;display:flex;flex-direction:column;gap:14px;color:#241E1B;">
+        <div style="aspect-ratio: 4/5; background: #F0E2C2; display: flex; align-items: center; justify-content: center; font-size: 13px; color: #6B5C46; transition: opacity .2s; height: 300px" style-hover="opacity:0.78;">照片待補</div>
+        <div style="display:flex;flex-direction:column;gap:5px;">
+          <span style="font-size:13px;font-weight:700;letter-spacing:0.14em;color:#9E2B25;">03　美術行銷</span>
+          <span style="font-family:'Noto Sans TC',sans-serif;font-weight:900;font-size:21px;line-height:1.45;">成果名稱</span>
+        </div>
+      </a>
+      <a href="work.html" class="workcard" style="flex:0 0 300px;display:flex;flex-direction:column;gap:14px;color:#241E1B;">
+        <div style="aspect-ratio: 4/5; background: #F0E2C2; display: flex; align-items: center; justify-content: center; font-size: 13px; color: #6B5C46; transition: opacity .2s; height: 300px" style-hover="opacity:0.78;">照片待補</div>
+        <div style="display:flex;flex-direction:column;gap:5px;">
+          <span style="font-size:13px;font-weight:700;letter-spacing:0.14em;color:#9E2B25;">04　資料建置</span>
+          <span style="font-family:'Noto Sans TC',sans-serif;font-weight:900;font-size:21px;line-height:1.45;">成果名稱</span>
+        </div>
+      </a>
+      <a href="work.html" class="workcard" style="flex:0 0 300px;display:flex;flex-direction:column;gap:14px;color:#241E1B;">
+        <div style="aspect-ratio: 4/5; background: #F0E2C2; display: flex; align-items: center; justify-content: center; font-size: 13px; color: #6B5C46; transition: opacity .2s; height: 300px" style-hover="opacity:0.78;">照片待補</div>
+        <div style="display:flex;flex-direction:column;gap:5px;">
+          <span style="font-size:13px;font-weight:700;letter-spacing:0.14em;color:#9E2B25;">05　AI 實驗</span>
+          <span style="font-family:'Noto Sans TC',sans-serif;font-weight:900;font-size:21px;line-height:1.45;">成果名稱</span>
+        </div>
+      </a>
+      <a href="work.html" class="workcard" style="flex:0 0 300px;display:flex;flex-direction:column;gap:14px;color:#241E1B;">
+        <div style="aspect-ratio: 4/5; background: #F0E2C2; display: flex; align-items: center; justify-content: center; font-size: 13px; color: #6B5C46; transition: opacity .2s; height: 300px" style-hover="opacity:0.78;">照片待補</div>
+        <div style="display:flex;flex-direction:column;gap:5px;">
+          <span style="font-size:13px;font-weight:700;letter-spacing:0.14em;color:#9E2B25;">06　跨組合作</span>
+          <span style="font-family:'Noto Sans TC',sans-serif;font-weight:900;font-size:21px;line-height:1.45;">成果名稱</span>
+        </div>
+      </a>
+    </div>
+  </section>
+
+  <section id="news" style="display: flex; flex-direction: column; gap: clamp(22px,3vh,34px); padding: clamp(92px,16vh,210px) clamp(24px,7vw,132px); border-top: 1px solid #E0CDA6; border-style: none">
+    <h2 style="margin:0;font-family:'Noto Sans TC',sans-serif;font-weight:900;font-size:clamp(27px,5.2vw,40px);line-height:1.3;letter-spacing:-0.02em;">最新消息</h2>
+    <div style="display:flex;flex-direction:column;">
+      <sc-for list="{{ news }}" as="n" hint-placeholder-count="4">
+        <div style="border-top:1px solid #E0CDA6;">
+          <button type="button" onClick="{{ n.toggle }}" style="width:100%;background:none;border:0;padding:22px 0;display:flex;align-items:flex-start;gap:20px;text-align:left;cursor:pointer;color:#241E1B;font-family:'Huninn',sans-serif;transition:padding-left .2s;" style-hover="padding-left:12px;">
+            <span style="flex:1;display:flex;flex-direction:column;gap:8px;min-width:0;">
+              <span style="font-size:13px;font-weight:700;letter-spacing:0.14em;color:#9E2B25;">{{ n.meta }}</span>
+              <span data-newstitle="" style="font-family:'Noto Sans TC',sans-serif;font-weight:900;font-size:21px;line-height:1.5;text-wrap:pretty;">{{ n.title }}</span>
+            </span>
+            <span style="font-family:'Noto Sans TC',sans-serif;font-weight:900;font-size:22px;color:#9E2B25;">{{ n.sign }}</span>
+          </button>
+          <sc-if value="{{ n.open }}" hint-placeholder-val="{{ false }}">
+            <p style="margin: 0; padding: 0 0 26px; font-size: 17px; line-height: 1.95; color: #4A3D33; text-wrap: pretty">{{ n.body }}</p>
+          </sc-if>
+        </div>
+      </sc-for>
+      <div style="border-top:1px solid #E0CDA6;padding-top:clamp(22px,3vh,32px);">
+        <button type="button" onClick="{{ toggleMore }}" style="background:none;border:1px solid #9E2B25;color:#9E2B25;padding:13px 28px;font-family:'Huninn',sans-serif;font-size:15px;font-weight:700;letter-spacing:0.04em;cursor:pointer;transition:background .2s,color .2s;" style-hover="background:#9E2B25;color:#FFF7E3;">{{ moreLabel }}</button>
+      </div>
+    </div>
+  </section>
+
+  <section id="studio" style="display: flex; flex-direction: column; gap: clamp(22px,3vh,34px); padding: clamp(92px,16vh,210px) clamp(24px,7vw,132px); border-top: 1px solid #E0CDA6; background-color:transparent; border-style: none">
+    <h2 style="margin:0;font-family:'Noto Sans TC',sans-serif;font-weight:900;font-size:clamp(27px,5.2vw,40px);line-height:1.3;letter-spacing:-0.02em;">工作室借用</h2>
+    <p style="margin: 0; font-size: 17px; line-height: 1.95; color: #4A3D33; text-wrap: pretty">除專案推動外，工作室亦提供完善的空間、設備及數位資源，支援團隊日常運作與各項工作執行，並建置攝影、錄音、影音剪輯、繪圖、書籍與史料掃描等數位設備。</p>
+    
+    <div style="display:flex;gap:12px;flex-wrap:wrap;">
+      <a href="https://forms.gle/Me8HE36Vsh2m5PAH6" style="padding:14px 26px;background:#9E2B25;color:#FFF7E3;font-size:15px;font-weight:700;letter-spacing:0.04em;transition:background .2s;" style-hover="background:#7E211C;">預約表單</a>
+      <a href="https://docs.google.com/spreadsheets/d/1kJkMR-Yx2vS9xL4uqTKAyRQ_3XvvLU07oC7Ctbxj30c/edit?usp=sharing" style="padding:14px 26px;border:1px solid #9E2B25;font-size:15px;font-weight:700;letter-spacing:0.04em;transition:background .2s,color .2s;" style-hover="background:#9E2B25;color:#FFF7E3;">公開預約狀況</a>
+      <a href="https://docs.google.com/document/d/16cVp-ZYO2-yt-M_WqDXOwhMtWmpUu9OKoGHjiBxMApk/edit?usp=sharing" style="padding:14px 26px;border:1px solid #9E2B25;font-size:15px;font-weight:700;letter-spacing:0.04em;transition:background .2s,color .2s;" style-hover="background:#9E2B25;color:#FFF7E3;">正式管理辦法</a>
+      <a href="https://qrfy.io/r/qa5STJ5QLi" style="padding:14px 26px;border:1px solid #9E2B25;font-size:15px;font-weight:700;letter-spacing:0.04em;transition:background .2s,color .2s;" style-hover="background:#9E2B25;color:#FFF7E3;">設備與空間借用申請</a>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:6px;padding-top:clamp(8px,1.6vh,16px);">
+      <button type="button" onClick="{{ toggleDocs }}" style="align-self:flex-start;display:flex;align-items:center;gap:12px;background:none;border:0;padding:6px 0;cursor:pointer;color:#9E2B25;font-family:'Huninn',sans-serif;font-size:13px;font-weight:700;letter-spacing:0.14em;transition:padding-left .2s;" style-hover="padding-left:8px;">
+        <span>相關文件</span>
+        <span style="font-family:'Noto Sans TC',sans-serif;font-weight:900;font-size:20px;letter-spacing:0;">{{ docsSign }}</span>
+      </button>
+      <sc-if value="{{ docsOpen }}" hint-placeholder-val="{{ false }}">
+      <div class="pairs" style="display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); column-gap: clamp(24px,5vw,80px)">
+        <a href="https://docs.google.com/document/d/1bvmvOAtL03WIP9GBBP1ycLj-TNe8E1E1Gw-JCjum1zY/edit?usp=sharing" style="display:flex;align-items:center;gap:16px;padding:18px 0;border-top:1px solid #E0CDA6;color:#241E1B;" style-hover="color:#9E2B25;"><span style="font-size:13px;font-weight:700;letter-spacing:0.14em;color:#9E2B25;">附件一</span><span style="font-size:17px;font-weight:700;">設備借用須知</span></a>
+        <a href="https://docs.google.com/document/d/13m4LyDr0jPPLjnW-ZeODrKOvcNi5Erpb8bvp4KwX-NQ/edit?usp=sharing" style="display:flex;align-items:center;gap:16px;padding:18px 0;border-top:1px solid #E0CDA6;color:#241E1B;" style-hover="color:#9E2B25;"><span style="font-size:13px;font-weight:700;letter-spacing:0.14em;color:#9E2B25;">附件二</span><span style="font-size:17px;font-weight:700;">器材點交單</span></a>
+        <a href="https://docs.google.com/document/d/1szQYTU4DVmx2d3zvw52CaOXuCng90KliYk9y-7Ye0CU/edit?usp=sharing" style="display:flex;align-items:center;gap:16px;padding:18px 0;border-top:1px solid #E0CDA6;color:#241E1B;" style-hover="color:#9E2B25;"><span style="font-size:13px;font-weight:700;letter-spacing:0.14em;color:#9E2B25;">附件三</span><span style="font-size:17px;font-weight:700;">空間使用規範</span></a>
+        <a href="https://docs.google.com/document/d/1gDhzFov3Nejc-UFadCCtQW0dsXLysNqb0TUXu2EPatQ/edit?usp=sharing" style="display:flex;align-items:center;gap:16px;padding:18px 0;border-top:1px solid #E0CDA6;color:#241E1B;" style-hover="color:#9E2B25;"><span style="font-size:13px;font-weight:700;letter-spacing:0.14em;color:#9E2B25;">附件四</span><span style="font-size:17px;font-weight:700;">數位器材清單</span></a>
+        <a href="https://docs.google.com/document/d/1xf9IFNt98dGPXXrcy7oTcA7m6IAZhNqL1W_MDVGz_FU/edit?usp=sharing" style="display:flex;align-items:center;gap:16px;padding:18px 0;border-top:1px solid #E0CDA6;border-bottom:1px solid #E0CDA6;color:#241E1B;" style-hover="color:#9E2B25;"><span style="font-size:13px;font-weight:700;letter-spacing:0.14em;color:#9E2B25;">附件五</span><span style="font-size:17px;font-weight:700;">數位器材清單</span></a>
+      </div>
+      </sc-if>
+    </div>
+  </section>
+
+  <section id="join" style="position:relative;background-color:#9E2B25;background-image:url(&quot;assets/paper-red.svg&quot;);background-size:600px 600px;background-blend-mode:soft-light;color:#FFF7E3;display:flex;flex-direction:column;gap:clamp(22px,3vh,34px);padding:clamp(92px,16vh,210px) clamp(24px,7vw,132px);overflow:hidden;">
+    <img src="assets/runner-480.png" alt="" data-par="30" style="position:absolute;right:clamp(-16px,1vw,24px);bottom:-14px;height:clamp(130px,19vh,230px);width:auto;filter:brightness(0) invert(1);opacity:0.15;pointer-events:none;">
+    <div style="position:relative;display:flex;align-items:center;gap:20px;flex-wrap:wrap;">
+      <h2 style="margin:0;font-family:'Noto Sans TC',sans-serif;font-weight:900;font-size:clamp(27px,5.2vw,40px);line-height:1.3;letter-spacing:-0.02em;">招募資訊</h2>
+      <sc-if value="{{ recruitOpen }}" hint-placeholder-val="{{ true }}">
+        <span style="padding:7px 15px;background:#FFF7E3;color:#9E2B25;font-size:14px;font-weight:700;letter-spacing:0.06em;">招募中</span>
+      </sc-if>
+      <sc-if value="{{ recruitClosed }}" hint-placeholder-val="{{ false }}">
+        <span style="padding:7px 15px;border:1px solid #FFF7E3;font-size:14px;font-weight:700;letter-spacing:0.06em;">目前未開放</span>
+      </sc-if>
+    </div>
+    <sc-if value="{{ recruitOpen }}" hint-placeholder-val="{{ true }}">
+      <div class="pairs" style="position:relative;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));column-gap:clamp(24px,5vw,80px);max-width:900px;">
+        <div style="display:flex;flex-direction:column;gap:7px;padding:20px 0;border-top:1px solid rgba(253,244,224,0.4);">
+          <span style="font-size:13px;font-weight:700;letter-spacing:0.14em;">招募對象</span>
+          <span style="font-family:'Noto Sans TC',sans-serif;font-weight:900;font-size:21px;line-height:1.5;">歷史學系學生</span>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:7px;padding:20px 0;border-top:1px solid rgba(253,244,224,0.4);">
+          <span style="font-size:13px;font-weight:700;letter-spacing:0.14em;">招募時間</span>
+          <span style="font-family:'Noto Sans TC',sans-serif;font-weight:900;font-size:21px;line-height:1.5;">每學期初</span>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:7px;padding:20px 0;border-top:1px solid rgba(253,244,224,0.4);border-bottom:1px solid rgba(253,244,224,0.4);">
+          <span style="font-size:13px;font-weight:700;letter-spacing:0.14em;">招募組別</span>
+          <span style="font-family:'Noto Sans TC',sans-serif;font-weight:900;font-size:21px;line-height:1.5;">五組同時開放</span>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:7px;padding:20px 0;border-top:1px solid rgba(253,244,224,0.4);border-bottom:1px solid rgba(253,244,224,0.4);">
+          <span style="font-size:13px;font-weight:700;letter-spacing:0.14em;">報名方式</span>
+          <a href="#join" style="font-family:'Noto Sans TC',sans-serif;font-weight:900;font-size:21px;line-height:1.5;color:#FFF7E3;align-self:flex-start;border-bottom:2px solid #FFF7E3;" style-hover="opacity:0.8;">報名表單 →</a>
+        </div>
+      </div>
+    </sc-if>
+    <sc-if value="{{ recruitClosed }}" hint-placeholder-val="{{ false }}">
+      <div style="position:relative;display:flex;flex-direction:column;gap:18px;max-width:34em;">
+        <p style="margin:0;font-family:'Noto Sans TC',sans-serif;font-weight:900;font-size:21px;line-height:1.6;">下次招募敬請期待。</p>
+        <p style="margin:0;font-size:17px;line-height:1.95;">招募資訊將於開放時公告於此頁與 Instagram，歡迎先追蹤我們。</p>
+        <a href="https://www.instagram.com/tomorrow_history_studio/" style="align-self:flex-start;padding:14px 26px;background:#FFF7E3;color:#9E2B25;font-size:15px;font-weight:700;letter-spacing:0.04em;transition:opacity .2s;" style-hover="opacity:0.84;">追蹤 Instagram</a>
+      </div>
+    </sc-if>
+  </section>
+
+  <section id="contact" style="display: flex; flex-direction: column; gap: clamp(22px,3vh,32px); padding: clamp(92px,16vh,210px) clamp(24px,7vw,132px); background-color:transparent">
+    <h2 style="margin:0;font-family:'Noto Sans TC',sans-serif;font-weight:900;font-size:clamp(27px,5.2vw,40px);line-height:1.3;letter-spacing:-0.02em;">聯絡我們</h2>
+    <p style="margin:0;max-width:34em;font-size:17px;line-height:1.95;color:#4A3D33;text-wrap:pretty;">專案合作、器材借用或其他洽詢，歡迎透過以下方式與我們聯繫。</p>
+    <div style="display:flex;flex-direction:column;gap:clamp(18px,2.4vh,26px);">
+      <div style="display:flex;flex-direction:column;gap:6px;">
+        <span style="font-size:13px;font-weight:700;letter-spacing:0.14em;color:#9E2B25;">EMAIL</span>
+        <a href="mailto:tomorrowhistorystudio@gmail.com" style="font-family:'Noto Sans TC',sans-serif;font-weight:900;font-size:clamp(19px,2.2vw,28px);line-height:1.45;color:#241E1B;align-self:flex-start;word-break:break-all;" style-hover="color:#9E2B25;">tomorrowhistorystudio@gmail.com</a>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:6px;">
+        <span style="font-size:13px;font-weight:700;letter-spacing:0.14em;color:#9E2B25;">INSTAGRAM</span>
+        <a href="https://www.instagram.com/tomorrow_history_studio/" style="font-family:'Noto Sans TC',sans-serif;font-weight:900;font-size:clamp(19px,2.2vw,28px);line-height:1.45;color:#241E1B;align-self:flex-start;" style-hover="color:#9E2B25;">tomorrow_history_studio</a>
+      </div>
+    </div>
+  </section>
+
+  <footer style="border-top: 1px solid #E0CDA6; padding: clamp(30px,4vw,42px) clamp(24px,7vw,132px); display: flex; align-items: center; justify-content: space-between; gap: 28px; flex-wrap: wrap; background-color: #EEE5D4">
+    <div class="footmark" style="display: flex; align-items: center; gap: 12px; background-color: #CCCCCC00">
+      <img src="assets/star-160.png" alt="" style="width:20px;height:auto;">
+      <span style="font-size:12px;font-weight:700;letter-spacing:0.16em;color:#9E2B25;white-space:nowrap;">明日歷史工作室</span>
+      <span data-div="" style="width:1px;height:12px;background:#C9A46A;"></span>
+      <span data-en="" style="font-size:12px;font-weight:700;letter-spacing:0.16em;color:#9E2B25;white-space:nowrap;">TOMORROW HISTORY STUDIO</span>
+    </div>
+    <div style="display: flex; gap: 22px; font-size: 15px; font-weight: 700; background-color: #CCCCCC00">
+      <a href="https://www.instagram.com/tomorrow_history_studio/" style="color:#241E1B;" style-hover="color:#9E2B25;">Instagram</a>
+      <a href="mailto:tomorrowhistorystudio@gmail.com" style="color:#241E1B;" style-hover="color:#9E2B25;">Email</a>
+      <a href="https://history.ncku.edu.tw/" style="color:#241E1B;" style-hover="color:#9E2B25;">成大歷史系</a>
+    </div>
+  </footer>
+
+  <template id="__bundler_thumbnail" data-bg-color="#FFF7E3">
+    <svg viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg"><rect width="1200" height="800" fill="#FFF7E3"></rect><text x="600" y="380" text-anchor="middle" font-family="Noto Sans TC, sans-serif" font-weight="900" font-size="112" fill="#9E2B25">讓歷史成為</text><text x="600" y="510" text-anchor="middle" font-family="Noto Sans TC, sans-serif" font-weight="900" font-size="112" fill="#9E2B25">未來的養分！</text></svg>
+  </template>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;recruitOpen&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;內容狀態&quot;}}">
+class Component extends DCLogic {
+  state = { menuOpen: false, openTeam: 0, openNews: -1, showMore: false, workIndex: 0, atStart: true, atEnd: false };
+  rail = React.createRef();
+  STEP = 326;
+
+  NEWS = [
+    { meta: "2026.09.08　招募資訊", title: "工作室開始招募新成員｜五組同時徵人，歡迎系上同學投件", body: "本學期五個組別同時開放招募，無需相關經驗，依興趣與可投入時段分組。詳細條件與報名方式見「招募資訊」區塊。" },
+    { meta: "2026.08.25　工作室近況", title: "工作室空間正式開放借用｜錄音室、會議桌與器材同步上線", body: "歷史系師生可提出借用申請。空間與設備清單、借用時段與注意事項見「工作室借用」區塊。" },
+    { meta: "2026.06.30　成果公告", title: "安平漁村口述訪談第一階段完成，十二位受訪者紀錄整理中", body: "這則消息的內文說明放在這裡，通常兩到三句，交代時間、地點與參與方式。需要附連結或報名表單也放這段。" },
+    { meta: "2026.05.18　近期活動", title: "工作室開放日｜五組同時擺攤，歡迎來聊", body: "這則消息的內文說明放在這裡，通常兩到三句，交代時間、地點與參與方式。需要附連結或報名表單也放這段。" },
+    { meta: "2026.04.12　成果公告", title: "《明日．歷史》系列短片第一支完成，片長十四分鐘", body: "這則消息的內文說明放在這裡，通常兩到三句，交代時間、地點與參與方式。需要附連結或報名表單也放這段。" },
+    { meta: "2026.03.02　工作室近況", title: "史料掃描設備完成建置，開始受理系內文件數位化", body: "這則消息的內文說明放在這裡，通常兩到三句，交代時間、地點與參與方式。需要附連結或報名表單也放這段。" },
+    { meta: "2026.01.20　近期活動", title: "寒假工作坊｜口述訪談入門，兩天實作", body: "這則消息的內文說明放在這裡，通常兩到三句，交代時間、地點與參與方式。需要附連結或報名表單也放這段。" }
+  ];
+
+  componentDidMount() {
+    this.measure = () => this.syncEdges();
+    setTimeout(this.measure, 0);
+    setTimeout(this.measure, 400);
+    if (window.ResizeObserver && this.rail.current) {
+      this.ro = new ResizeObserver(this.measure);
+      this.ro.observe(this.rail.current);
+    }
+    window.addEventListener("resize", this.measure, { passive: true });
+    this.onScroll = () => {
+      if (this.tick) return;
+      this.tick = setTimeout(() => { this.tick = 0; this.applyMotion(); }, 16);
+    };
+    window.addEventListener("scroll", this.onScroll, { passive: true });
+    this.onAnchor = e => {
+      const a = e.target.closest && e.target.closest('a[href^="#"]');
+      if (!a) return;
+      const id = a.getAttribute("href").slice(1);
+      const t = id && document.getElementById(id);
+      if (!t) return;
+      e.preventDefault();
+      const head = document.querySelector("header");
+      const off = head ? head.getBoundingClientRect().height : 0;
+      this.scrollPageTo(Math.max(0, t.getBoundingClientRect().top + window.scrollY - off));
+    };
+    document.addEventListener("click", this.onAnchor);
+    this.applyMotion();
+    this.setupReveal();
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener("resize", this.measure);
+    window.removeEventListener("scroll", this.onScroll);
+    document.removeEventListener("click", this.onAnchor);
+    if (this.ro) this.ro.disconnect();
+    if (this.io) this.io.disconnect();
+    if (this.tick) clearTimeout(this.tick);
+    if (this.anim) clearInterval(this.anim);
+    if (this.pageAnim) clearInterval(this.pageAnim);
+  }
+
+  scrollPageTo(target) {
+    if (this.pageAnim) clearInterval(this.pageAnim);
+    const from = window.scrollY, dist = target - from, t0 = Date.now(), dur = 460;
+    this.pageAnim = setInterval(() => {
+      const p = Math.min(1, (Date.now() - t0) / dur);
+      const e = p < 0.5 ? 2 * p * p : 1 - Math.pow(-2 * p + 2, 2) / 2;
+      window.scrollTo(0, from + dist * e);
+      if (p >= 1) { clearInterval(this.pageAnim); this.pageAnim = 0; window.scrollTo(0, target); }
+    }, 16);
+  }
+
+  setupReveal() {
+    if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (!window.IntersectionObserver) return;
+    const targets = [];
+    document.querySelectorAll("section").forEach(sec => {
+      if (sec.id === "hero") return;
+      Array.prototype.forEach.call(sec.children, (el, i) => targets.push({ el, i }));
+    });
+    if (!targets.length) return;
+    targets.forEach(({ el, i }) => {
+      el.style.opacity = "0";
+      el.style.transform = "translate3d(0,22px,0)";
+      el.style.transition = "opacity .68s cubic-bezier(.22,.7,.2,1) " + (i * 70) + "ms, transform .68s cubic-bezier(.22,.7,.2,1) " + (i * 70) + "ms";
+    });
+    this.io = new IntersectionObserver(entries => {
+      entries.forEach(en => {
+        if (!en.isIntersecting) return;
+        en.target.style.opacity = "1";
+        en.target.style.transform = "translate3d(0,0,0)";
+        this.io.unobserve(en.target);
+      });
+    }, { rootMargin: "0px 0px -12% 0px", threshold: 0.08 });
+    targets.forEach(({ el }) => this.io.observe(el));
+  }
+
+  applyMotion() {
+    if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const vh = window.innerHeight || 800;
+    document.querySelectorAll("[data-par]").forEach(el => {
+      const r = el.getBoundingClientRect();
+      if (r.bottom < -200 || r.top > vh + 200) return;
+      const p = (r.top + r.height / 2 - vh / 2) / vh;
+      const amt = parseFloat(el.getAttribute("data-par")) || 20;
+      el.style.transform = "translate3d(0," + (-p * amt).toFixed(1) + "px,0)";
+    });
+    const y = window.scrollY || 0;
+    const panel = document.getElementById("heropanel");
+    if (panel) {
+      const k = Math.min(1, y / (vh * 0.8));
+      panel.style.opacity = String(1 - k * 0.55);
+
+    }
+    const head = document.querySelector("header");
+    if (head) head.style.boxShadow = y > 12 ? "0 10px 26px rgba(80,60,28,0.12)" : "none";
+  }
+
+  syncEdges() {
+    const el = this.rail.current;
+    if (!el) return;
+    const max = el.scrollWidth - el.clientWidth;
+    if (max <= 0 && el.children.length > 1) return;
+    const atStart = el.scrollLeft <= 4;
+    const atEnd = max <= 0 ? true : el.scrollLeft >= max - 4;
+    if (atStart !== this.state.atStart || atEnd !== this.state.atEnd) this.setState({ atStart, atEnd });
+  }
+
+  scrollRail(dir) {
+    const el = this.rail.current;
+    if (!el) return;
+    const max = el.scrollWidth - el.clientWidth;
+    if (max <= 0) return;
+    const perView = Math.max(1, Math.floor(el.clientWidth / this.STEP));
+    const last = Math.ceil((max + 1) / this.STEP);
+    const base = Math.round(el.scrollLeft / this.STEP);
+    const next = Math.min(Math.max(base + dir * perView, 0), last);
+    const target = Math.min(next * this.STEP, max);
+    this.animateTo(el, target);
+    this.setState({ workIndex: next, atStart: target <= 4, atEnd: target >= max - 4 });
+  }
+
+  animateTo(el, target) {
+    if (this.anim) clearInterval(this.anim);
+    const from = el.scrollLeft, dist = target - from, t0 = Date.now(), dur = 380;
+    this.anim = setInterval(() => {
+      const p = Math.min(1, (Date.now() - t0) / dur);
+      const e = p < 0.5 ? 2 * p * p : 1 - Math.pow(-2 * p + 2, 2) / 2;
+      el.scrollLeft = from + dist * e;
+      if (p >= 1) { clearInterval(this.anim); this.anim = 0; el.scrollLeft = target; }
+    }, 16);
+  }
+
+  renderVals() {
+    const recruitOpen = this.props.recruitOpen ?? true;
+    const shown = this.state.showMore ? this.NEWS : this.NEWS.slice(0, 4);
+    const vals = {
+      recruitOpen,
+      recruitClosed: !recruitOpen,
+      news: shown.map((n, i) => ({
+        meta: n.meta,
+        title: n.title,
+        body: n.body,
+        open: this.state.openNews === i,
+        sign: this.state.openNews === i ? "−" : "+",
+        toggle: () => this.setState(st => ({ openNews: st.openNews === i ? -1 : i }))
+      })),
+      docsOpen: this.state.docsOpen ?? false,
+      docsSign: this.state.docsOpen ? "−" : "+",
+      toggleDocs: () => this.setState(st => ({ docsOpen: !st.docsOpen })),
+      moreLabel: this.state.showMore ? "收起消息" : "更多消息",
+      toggleMore: () => this.setState(st => ({ showMore: !st.showMore })),
+      rail: this.rail,
+      prevWork: () => this.scrollRail(-1),
+      nextWork: () => this.scrollRail(1),
+      onRailScroll: () => {
+        const el = this.rail.current;
+        if (el) this.state.workIndex = Math.round(el.scrollLeft / this.STEP);
+        this.syncEdges();
+      },
+      atStart: this.state.atStart,
+      atEnd: this.state.atEnd,
+      opPrev: this.state.atStart ? 0.35 : 1,
+      opNext: this.state.atEnd ? 0.35 : 1,
+      menuOpenAttr: this.state.menuOpen ? "true" : "false",
+      menuLabel: this.state.menuOpen ? "關閉" : "選單",
+      toggleMenu: () => this.setState(st => ({ menuOpen: !st.menuOpen })),
+      closeMenu: () => this.setState({ menuOpen: false })
+    };
+    for (let i = 1; i <= 5; i++) {
+      const open = this.state.openTeam === i;
+      vals["o" + i] = open;
+      vals["s" + i] = open ? "−" : "+";
+      vals["c" + i] = open ? "#9E2B25" : "#241E1B";
+      vals["t" + i] = () => this.setState(st => ({ openTeam: st.openTeam === i ? 0 : i }));
+    }
+    return vals;
+  }
+}
+</script>
+</body>
+</html>
