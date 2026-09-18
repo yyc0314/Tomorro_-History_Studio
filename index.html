@@ -20,7 +20,8 @@
   @keyframes runFloat { 0%,100% { transform: translate(0,0) rotate(4deg); } 50% { transform: translate(-5px,-12px) rotate(-8deg); } }
   @keyframes hintLine { 0% { transform: scaleY(0.15); transform-origin: top; opacity: 0.25; } 45% { transform: scaleY(1); transform-origin: top; opacity: 1; } 55% { transform: scaleY(1); transform-origin: bottom; opacity: 1; } 100% { transform: scaleY(0.15); transform-origin: bottom; opacity: 0.25; } }
   @media (prefers-reduced-motion: reduce) { #heroRow img, #heropanel img, #hintline { animation: none !important; } }
-  @media (max-width: 700px) { #railtext { display: none !important; } }
+  .mbr { display: none; }
+  @media (max-width: 700px) { .mbr { display: inline !important; } }
   #rail { scrollbar-width: none; }
   #rail::-webkit-scrollbar { height: 0; }
   @media (max-width: 1100px) {
@@ -92,7 +93,7 @@
       </div>
     <div id="heroRow" style="position:relative;display:flex;align-items:center;justify-content:center;gap:clamp(10px,2.4vw,40px);width:100%;">
       <img src="assets/star-160.png" alt="" style="flex:0 0 auto;align-self:flex-start;width:clamp(28px,4vw,72px);height:auto;animation:starFloat 6s ease-in-out infinite, starTwinkle 3.2s ease-in-out infinite;">
-      <h1 id="herotitle" style="margin:0;min-width:0;font-family:'Noto Sans TC',sans-serif;font-weight:900;font-size:clamp(32px,5.4vw,92px);line-height:1.16;letter-spacing:-0.01em;color:#9E2B25;text-wrap:balance;">讓歷史成為未來的養分！</h1>
+      <h1 id="herotitle" style="margin:0;min-width:0;font-family:'Noto Sans TC',sans-serif;font-weight:900;font-size:clamp(32px,5.4vw,92px);line-height:1.16;letter-spacing:-0.01em;color:#9E2B25;text-wrap:balance;">讓歷史成為<br class="mbr">未來的養分！</h1>
       <img src="assets/runner-480.png" alt="" style="flex:0 0 auto;align-self:flex-end;height:clamp(58px,8.4vw,128px);width:auto;transform-origin:50% 100%;animation:runFloat 6s ease-in-out infinite;">
     </div>
     <div style="position:relative;display:flex;align-items:center;gap:clamp(12px,1.6vw,22px);font-family:'Noto Sans TC',sans-serif;font-weight:900;font-size:clamp(17px,1.9vw,27px);color:#9E2B25;">
